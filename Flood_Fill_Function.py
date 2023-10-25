@@ -1,19 +1,35 @@
 def flood_fill(input_board, old, new, x, y):
-    # If the coordinate is out of bounds or the value at (x, y) is not the old value, return.
-    if x < 0 or x >= len(input_board[0]) or y < 0 or y >= len(input_board) or input_board[y][x] != old:
+    # Base cases to stop recursion
+    if x < 0 or x >= len(input_board) or y < 0 or y >= len(input_board[0]):
+        return input_board
+    if input_board[x][y] != old:
         return input_board
 
-    # Convert the row string to a list for mutability.
-    row = list(input_board[y])
-    # Replace the old value with the new value.
-    row[x] = new
-    # Convert the row list back to a string and update the board.
-    input_board[y] = "".join(row)
+    # Update the current cell with the new value
+    row = list(input_board[x])
+    row[y] = new
+    input_board[x] = ''.join(row)
 
-    # Recursive calls for north, south, east, and west.
-    flood_fill(input_board, old, new, x+1, y)
-    flood_fill(input_board, old, new, x-1, y)
-    flood_fill(input_board, old, new, x, y+1)
-    flood_fill(input_board, old, new, x, y-1)
+    # Recursively check and fill neighboring cells
+    flood_fill(input_board, old, new, x + 1, y)
+    flood_fill(input_board, old, new, x - 1, y)
+    flood_fill(input_board, old, new, x, y + 1)
+    flood_fill(input_board, old, new, x, y - 1)
 
     return input_board
+
+# Test cases
+board = [
+    "......................",
+    "......##########......",
+    "......#........#......",
+    "......#........#......",
+    "......#........#####..",
+    "....###............#..",
+    "....#............###..",
+    "....##############....",
+]
+
+modified_board = flood_fill(input_board=board.copy(), old=".", new="~", x=5, y=12)
+for a in modified_board:
+    print(a)
